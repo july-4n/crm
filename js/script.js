@@ -70,6 +70,8 @@ const modalInputCheckbox = modal.querySelector('.modal__checkbox');
 const modalInputDiscount = modal.querySelector('.modal__input_discount');
 const overlay = document.querySelector('.overlay');
 const tableBody = document.querySelector('.table__body');
+const btnAdd = document.querySelector('.panel__add-goods');
+const btnClose = document.querySelector('.modal__close');
 
 overlay.classList.remove('active');
 
@@ -101,3 +103,21 @@ const renderGoods = (arr) => {
 };
 
 renderGoods(goodsArr);
+
+modal.addEventListener('click', (evt) => {
+  evt.stopPropagation();
+});
+
+const openModal = () => {
+  overlay.classList.add('active');
+}
+
+const closeModal = () => {
+  overlay.classList.remove('active');
+}
+
+btnAdd.addEventListener('click', openModal);
+
+btnClose.addEventListener('click', closeModal);
+
+overlay.addEventListener('click', closeModal);
