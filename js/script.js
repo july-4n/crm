@@ -72,11 +72,12 @@ const overlay = document.querySelector('.overlay');
 const tableBody = document.querySelector('.table__body');
 const btnAdd = document.querySelector('.panel__add-goods');
 const btnClose = document.querySelector('.modal__close');
+const table = document.querySelector('.table');
 
 overlay.classList.remove('active');
 
 const createRow = (obj) => `
-    <tr>
+    <tr class="table__row">
       <td class="table__cell">${obj.id}</td>
       <td class="table__cell table__cell_left table__cell_name" data-id="${obj.goodsID}">
         <span class="table__cell-id">id: ${obj.goodsID}</span>
@@ -104,20 +105,28 @@ const renderGoods = (arr) => {
 
 renderGoods(goodsArr);
 
-modal.addEventListener('click', (evt) => {
-  evt.stopPropagation();
-});
+const closeModal = () => {
+  overlay.classList.remove('active');
+};
 
 const openModal = () => {
   overlay.classList.add('active');
-}
+};
 
-const closeModal = () => {
-  overlay.classList.remove('active');
-}
+overlay.addEventListener('click', (evt) => {
+  if (evt.target === overlay || evt.target.closest('.modal__close')) {
+    closeModal();
+  }
+});
 
 btnAdd.addEventListener('click', openModal);
 
-btnClose.addEventListener('click', closeModal);
+table.addEventListener('click', (evt) => {
+  if (evt.target.closest('.table__btn_del')) {
+    const row = evt.target.closest('.table__row').remove();
 
-overlay.addEventListener('click', closeModal);
+    goodsArr.splice(row, 1);
+
+    console.log(goodsArr);
+  }
+});
