@@ -2,6 +2,7 @@
 
 const goodsArr = [
   {
+    'vendorId': '254365',
     'name': 'Смартфон Xiaomi 11T 8/128GB',
     'price': 27000,
     'description': 'Смартфон Xiaomi 11T – это представитель флагманской линейки, выпущенной во второй половине 2021 года. И он полностью соответствует такому позиционированию, предоставляя своим обладателям возможность пользоваться отличными камерами, ни в чем себя не ограничивать при запуске игр и других требовательных приложений.',
@@ -15,6 +16,7 @@ const goodsArr = [
     },
   },
   {
+    'vendorId': '254875',
     'name': 'Радиоуправляемый автомобиль Cheetan',
     'price': 4000,
     'description': 'Внедорожник на дистанционном управлении. Скорость 25км/ч. Возраст 7 - 14 лет',
@@ -28,6 +30,7 @@ const goodsArr = [
     },
   },
   {
+    'vendorId': '254376',
     'name': 'ТВ приставка MECOOL KI',
     'price': 12400,
     'description': 'Всего лишь один шаг сделает ваш телевизор умным, Быстрый и умный MECOOL KI PRO, прекрасно спроектированный, сочетает в себе прочный процессор Cortex-A53 с чипом Amlogic S905D',
@@ -41,6 +44,7 @@ const goodsArr = [
     },
   },
   {
+    'vendorId': '354369',
     'name': 'Витая пара PROConnect 01-0043-3-25',
     'price': 22,
     'description': 'Витая пара Proconnect 01-0043-3-25 является сетевым кабелем с 4 парами проводов типа UTP, в качестве проводника в которых используется алюминий, плакированный медью CCA. Такая неэкранированная витая пара с одножильными проводами диаметром 0.50 мм широко применяется в процессе сетевых монтажных работ. С ее помощью вы сможете обеспечить развертывание локальной сети в домашних условиях или на предприятии, объединить все необходимое вам оборудование в единую сеть.',
@@ -67,7 +71,7 @@ const modalInputs = modal.querySelectorAll('.modal__input');
 const modalInputCheckbox = modal.querySelector('.modal__checkbox');
 const modalInputDiscount = modal.querySelector('.modal__input_discount');
 const btnClose = modal.querySelector('.modal__close');
-const vendorId = modal.querySelector('.vendor-code__id');
+const vendorModalId = modal.querySelector('.vendor-code__id');
 const modalTotal = modal.querySelector('.modal__total-price');
 const modalCount = modal.querySelector('#count');
 const modalPrice = modal.querySelector('#price');
@@ -75,31 +79,18 @@ const tableBody = table.querySelector('.table__body');
 
 overlay.classList.remove('active');
 
-const getRandomIntInclusive = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1) + min);
-};
-
 const addGoodData = el => {
   goodsArr.push(el);
 };
 
-const getVendorID = () => {
-  const venId = getRandomIntInclusive(200000000, 400000000);
-  // условие
-  vendorId.textContent = venId;
-  return venId;
-}
+const generateRandomId = () => Math.floor(Math.random() * 1_000_000);
 
 const createRow = (obj, i) => {
-  const objId = getVendorID();
-
   return `
     <tr class="table__row">
       <td class="table__cell">${i+1}</td>
-      <td class="table__cell table__cell_left table__cell_name" data-id="${objId}">
-        <span class="table__cell-id">id: ${objId}</span>
+      <td class="table__cell table__cell_left table__cell_name" data-id="${obj.vendorId}">
+        <span class="table__cell-id">id: ${obj.vendorId}</span>
         ${obj.name}</td>
       <td class="table__cell table__cell_left">${obj.category}</td>
       <td class="table__cell">${obj.units}</td>
@@ -141,7 +132,7 @@ const closeModal = () => {
 const openModal = () => {
   overlay.classList.add('active');
   modalTotal.textContent = 0;
-  getVendorID();
+  vendorModalId.textContent = generateRandomId();
 };
 
 overlay.addEventListener('click', (evt) => {
