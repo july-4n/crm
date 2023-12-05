@@ -12,6 +12,7 @@ export const goodsArr = [
       'small': 'img/smrtxiaomi11t-m.jpg',
       'big': 'img/smrtxiaomi11t-b.jpg',
     },
+    'url': 'img/tv.jpeg',
   },
   {
     'vendorId': '254875',
@@ -26,6 +27,7 @@ export const goodsArr = [
       'small': 'img/cheetancar-m.jpg',
       'big': 'img/cheetancar-b.jpg',
     },
+    'url': 'img/tv.jpeg',
   },
   {
     'vendorId': '254376',
@@ -40,6 +42,7 @@ export const goodsArr = [
       'small': 'img/tvboxmecool-m.jpg',
       'big': 'img/tvboxmecool-b.jpg',
     },
+    'url': 'img/tv.jpeg',
   },
   {
     'vendorId': '354369',
@@ -54,5 +57,6 @@ export const goodsArr = [
       'small': 'img/lan_proconnect43-3-25.jpg',
       'big': 'img/lan_proconnect43-3-25-b.jpg',
     },
+    'url': 'img/tv.jpeg',
   },
 ];

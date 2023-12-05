@@ -18,6 +18,17 @@ const getNumberRow = () => {
 }
 
 table.addEventListener('click', (evt) => {
+  if (evt.target.closest('.table__btn_pic')) {
+    const el = evt.target.closest('.table__btn_pic').dataset.pic;
+    const windowFeatures = `left=${screen.width / 2 - 400},top=${screen.height / 2 - 300},width=800,height=600`;
+    const win = open('about:blank', '', windowFeatures);
+    win.document.body.innerHTML = `
+      <img style='width: 100%; height: 100%; object-fit: cover' src = ${el}>
+    `
+  };
+});
+
+table.addEventListener('click', (evt) => {
   if (evt.target.closest('.table__btn_del')) {
     const row = evt.target.closest('.table__row').remove();
 
