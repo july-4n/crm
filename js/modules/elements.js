@@ -15,6 +15,8 @@ const modalTotal = modal.querySelector('.modal__total-price');
 const modalCount = modal.querySelector('#count');
 const modalPrice = modal.querySelector('#price');
 const tableBody = table.querySelector('.table__body');
+const file = document.querySelector('.modal__file');
+const modalFieldset = document.querySelector('.modal__fieldset');
 
 export {
   cms,
@@ -33,5 +35,7 @@ export {
   modalTotal,
   modalCount,
   modalPrice,
-  tableBody
+  tableBody,
+  file,
+  modalFieldset
 }

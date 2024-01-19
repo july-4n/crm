@@ -194,6 +194,11 @@
   font-size: 0;
 }
 
+.modal__label_file-error {
+  grid-area: file-add;
+  color: red;
+}
+
 
 .modal__input {
   display: block;
