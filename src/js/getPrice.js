@@ -1,4 +1,4 @@
-import {table, totalPrice} from './elements.js';
+import {table, totalPrice} from './elements';
 
 export const getTotalPrice = () => {
   const allGoods = table.querySelectorAll('[data-total-good]');
