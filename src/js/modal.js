@@ -1,38 +1,16 @@
 import {generateRandomId} from './utils';
-import fetchRequest from './fetchRequest';
 import * as elems from './elements';
 
 const maxFileSize = 1048576;
-
-const createOption = (text) => {
-  const option = document.createElement('option');
-  option.textContent = text;
-  option.value = text;
-  return option;
-};
-
-export const renderCategory = (err, data) => {
-  if (err) {
-    console.warn(err, data);
-    return;
-  }
-  const categories = data.map(el => {
-    const option = createOption(el);
-    option.value = el;
-
-    return option;
-  });
-  return categories;
-};
-
-const initCategory = async () => {
-  const categories = await fetchRequest('https://sore-wry-blade.glitch.me/api/categories', {
-    callback: renderCategory,
-  });
-  console.log(categories);
-  elems.categoryList.innerHTML = '';
-  elems.categoryList.append(...categories)
-};
+const delSvg = `
+  <div class="image-container__overlay">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g id="ic:outline-delete-forever">
+    <path id="Vector" d="M23.5334 17.45L20 20.9833L16.45 17.45L14.1 19.8L17.65 23.3333L14.1167 26.8667L16.4667 29.2167L20 25.6833L23.5334 29.2167L25.8834 26.8667L22.35 23.3333L25.8834 19.8L23.5334 17.45ZM25.8334 6.66667L24.1667 5H15.8334L14.1667 6.66667H8.33337V10H31.6667V6.66667H25.8334ZM10 31.6667C10 33.5 11.5 35 13.3334 35H26.6667C28.5 35 30 33.5 30 31.6667V11.6667H10V31.6667ZM13.3334 15H26.6667V31.6667H13.3334V15Z" fill="white"/>
+    </g>
+    </svg>
+  </div>
+`
 
 const closeModal = () => {
   elems.overlay.classList.remove('active');
@@ -43,6 +21,7 @@ const closeModal = () => {
 const openModal = () => {
   elems.overlay.classList.add('active');
   elems.modalTotal.textContent = 0;
+  elems.vendorModalId.textContent = '';
   elems.vendorModalId.textContent = generateRandomId();
   return elems.vendorModalId;
 };
@@ -102,6 +81,7 @@ elems.file.addEventListener('change', () => {
       modalPreviewContainer.append(modalPreview);
       modalPreview.src = src;
       modalPreviewContainer.style.display = 'block';
+      modalPreviewContainer.insertAdjacentHTML('beforeend', delSvg);
     } else {
       modalPreviewContainer.remove();
       fileErrorMessage.classList.add('modal__label_file-error');
@@ -111,10 +91,14 @@ elems.file.addEventListener('change', () => {
   }
 })
 
-initCategory();
+document.addEventListener('click', ({target}) => {
+  if (target.closest('.image-container__overlay svg')) {
+    modalPreviewContainer.remove();
+    elems.file.value = '';
+  }
+});
 
 export {
   closeModal,
   openModal,
-  initCategory,
 }

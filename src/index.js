@@ -4,7 +4,11 @@ import './js/render';
 import './js/modal';
 import './js/search';
 import './js/fillModal';
+import initCategory from './js/initCategory.js';
+import './js/modalError.js'
 
 import './css/index.css';
 
 addGoodForm(modalForm, tableBody);
+initCategory();
+

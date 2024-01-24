@@ -44,7 +44,7 @@
               </tr>
             </thead>
             <tbody class="table__body">
-              <!-- <tr>
+              <tr>
                 <td class="table__cell">1</td>
                 <td class="table__cell table__cell_left table__cell_name" data-id="24601654816512">
                   <span class="table__cell-id">id: 24601654816512</span>
@@ -59,8 +59,8 @@
                   <button class="table__btn table__btn_edit"></button>
                   <button class="table__btn table__btn_del"></button>
                 </td>
-              </tr> -->
-              <!-- <tr>
+              </tr>
+              <tr>
                 <td class="table__cell ">2</td>
                 <td class="table__cell table__cell_left table__cell_name" data-id="24601654816512">
                   <span class="table__cell-id">id: 24601654816512</span>Телевизор DEXP</td>
@@ -74,12 +74,9 @@
                   <button class="table__btn table__btn_edit"></button>
                   <button class="table__btn table__btn_del"></button>
                 </td>
-              </tr> -->
+              </tr>
             </tbody>
           </table>
-
-
-
         </div>
         <div class="sub-panel">
           <p class="sub-panel__choice-pages">Показывать на странице: 5</p>
@@ -112,17 +109,15 @@
 
           <label class="modal__label modal__label_name" for="title">
             <span class="modal__text">Наименование</span>
-            <input class="modal__input" type="text" name="title" id="name">
+            <input class="modal__input" type="text" name="title" id="title">
           </label>
-
-
-          <label class="modal__label modal__label_category" for="category">
+          <div class= "modal__label modal__label_category">
             <span class="modal__text">Категория</span>
-            <input class="modal__input" type="text" name="category" id="category" list="category-list" required  autocomplete="off">
-          </label>
-          <datalist id="category-list">
-            <option value=""></option>
-          </datalist>
+            <select class= "modal__select" id="category-list" name="category">
+              <option value=""></option>
+            </select>
+          </div>
+
 
           <label class="modal__label modal__label_description" for="description">
             <span class="modal__text">Описание</span>

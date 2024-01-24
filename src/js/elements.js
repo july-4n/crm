@@ -21,8 +21,8 @@ const modalFieldset = modal.querySelector('.modal__fieldset');
 const categoryList = modal.querySelector('#category-list');
 const modalDescription = modal.querySelector('#description');
 const modalUnits = modal.querySelector('#units');
-const modalName = modal.querySelector('#name');
-const modalCategory = modal.querySelector('#category');
+const modalName = modal.querySelector('#title');
+const modalCategory = modal.querySelector('.modal__label_category');
 const tableBody = table.querySelector('.table__body');
 
 

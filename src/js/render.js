@@ -4,7 +4,7 @@ import fetchRequest from './fetchRequest';
 import {getTotalPrice} from './getPrice';
 
 
-export const renderGoods = (err, data) => {
+const renderGoods = (err, data) => {
   if (err) {
     console.warn(err, data);
     return;
@@ -17,7 +17,7 @@ export const renderGoods = (err, data) => {
 };
 
 const initGoods = async () => {
-  const goods = await fetchRequest('https://sore-wry-blade.glitch.me/api/goods', {
+  const goods = await fetchRequest('https://sore-wry-blade.glitch.me/api/goods?page=2', {
     callback: renderGoods,
   });
 

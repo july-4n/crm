@@ -63,7 +63,7 @@
     "category description"
     "units count"
     "discount price"
-    ". file"
+    "error file"
     "file-add file-add";
   gap: 12px 24px;
   background: #FFFFFF;
@@ -75,7 +75,6 @@
   max-width: 580px;
 }
 
-
 .modal__label {
   display: block;
   font-weight: 600;
@@ -84,11 +83,7 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #6E6893;
-
 }
-
-
-
 
 .modal__text {
   display: block;
@@ -126,7 +121,6 @@
   grid-area: price;
 }
 
-
 .modal__label_file {
   grid-area: file;
   font-weight: 600;
@@ -153,7 +147,7 @@
   margin: 0 auto;
 }
 
-.image-container:hover:after {
+/* .image-container:hover:after {
   content: '';
   position: absolute;
   top: 50%;
@@ -174,6 +168,35 @@
   width: 35px;
   height: 1px;
   border: 1px solid black;
+} */
+
+.image-container__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  visibility: hidden;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.50) 0%, rgba(0, 0, 0, 0.50) 100%);
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.image-container__overlay svg {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.image-container:hover .image-container__overlay {
+  opacity: 1;
+  visibility: visible;
 }
 
 .modal__label_file:hover {
@@ -195,11 +218,21 @@
 }
 
 .modal__label_file-error {
-  grid-area: file-add;
+  grid-area: error;
   color: red;
+  text-transform: uppercase;
+  text-align: center;
+
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
 }
 
+.modal__select {
+  position: relative;
+}
 
+.modal__select,
 .modal__input {
   display: block;
   width: 100%;
@@ -340,6 +373,7 @@
       "discount"
       "price"
       "file"
+      "error"
       "file-add";
     gap: 12px 24px;
     background: #FFFFFF;
