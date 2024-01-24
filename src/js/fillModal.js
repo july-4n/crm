@@ -28,6 +28,47 @@ const confirmModal = (id) => {
   })
 };
 
+const editGoodForm = (form, list) => {
+  form.addEventListener('submit', evt => {
+    evt.preventDefault();
+    const formData = new FormData(evt.target);
+    const editGood = Object.fromEntries(formData);
+    const id = elems.vendorModalId.textContent;
+    console.log(editGood)
+    const params = {
+      title: editGood.title,
+      description: editGood.description,
+      price: editGood.price,
+      count: editGood.count,
+      units: editGood.units,
+      category: editGood.category,
+    };
+
+    fetchRequest(`https://sore-wry-blade.glitch.me/api/goods/${id}`, {
+      method: 'PATCH',
+      body: params,
+
+      callback(err, data) {
+        if (err) {
+          renderModalErr();
+        } else {
+          console.log(params);
+
+          addGoodPage(editGood, list, id);
+          getNumberRow();
+          getTotalPrice();
+        }
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    closeModal();
+    initGoods();
+  });
+};
+
 const fillModal = (err, data) => {
   if (err) {
     console.warn(err, data);
@@ -75,6 +116,8 @@ const fillModal = (err, data) => {
       } else {
         elems.modalTotal.textContent = parseInt(elems.modalCount.value * elems.modalPrice.value);
       }
+
+      editGoodForm(elems.modalForm, elems.tableBody);
     }
   });
 }
@@ -94,46 +137,5 @@ const delGoods = async (id) => {
   initGoods();
 };
 
-const editGoodForm = (form, list) => {
-  form.addEventListener('submit', evt => {
-    evt.preventDefault();
-    const formData = new FormData(evt.target);
-    const editGood = Object.fromEntries(formData);
-    const id = elems.vendorModalId.textContent;
-    console.log(editGood)
-    const params = {
-      title: editGood.title,
-      description: editGood.description,
-      price: editGood.price,
-      count: editGood.count,
-      units: editGood.units,
-      category: editGood.category,
-    };
-
-    fetchRequest(`https://sore-wry-blade.glitch.me/api/goods/${id}`, {
-      method: 'PATCH',
-      body: params,
-
-      callback(err, data) {
-        if (err) {
-          renderModalErr();
-        } else {
-          console.log(params);
-
-          addGoodPage(editGood, list, id);
-          getNumberRow();
-          getTotalPrice();
-        }
-      },
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    closeModal();
-    initGoods();
-  });
-};
-
 getDataModal();
-editGoodForm(elems.modalForm, elems.tableBody);
+
