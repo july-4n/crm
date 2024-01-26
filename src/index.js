@@ -9,6 +9,6 @@ import './js/modalError.js'
 
 import './css/index.css';
 
-addGoodForm(modalForm, tableBody);
+// addGoodForm();
 initCategory();
 

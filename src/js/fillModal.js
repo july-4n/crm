@@ -4,7 +4,10 @@ import {renderModalAdd} from './modalConfirm';
 import {getNumberRow} from './utils';
 import initGoods from './render';
 import renderModalErr from './modalError';
-import {closeModal} from './modal';
+import {openModal, closeModal} from './modal';
+import { editGoodForm } from './addGoods';
+
+const serverURL = 'https://sore-wry-blade.glitch.me';
 
 const showPreview = (target) => {
   const el = target.closest('.table__btn_pic').dataset.pic;
@@ -28,46 +31,7 @@ const confirmModal = (id) => {
   })
 };
 
-const editGoodForm = (form, list) => {
-  form.addEventListener('submit', evt => {
-    evt.preventDefault();
-    const formData = new FormData(evt.target);
-    const editGood = Object.fromEntries(formData);
-    const id = elems.vendorModalId.textContent;
-    console.log(editGood)
-    const params = {
-      title: editGood.title,
-      description: editGood.description,
-      price: editGood.price,
-      count: editGood.count,
-      units: editGood.units,
-      category: editGood.category,
-    };
 
-    fetchRequest(`https://sore-wry-blade.glitch.me/api/goods/${id}`, {
-      method: 'PATCH',
-      body: params,
-
-      callback(err, data) {
-        if (err) {
-          renderModalErr();
-        } else {
-          console.log(params);
-
-          addGoodPage(editGood, list, id);
-          getNumberRow();
-          getTotalPrice();
-        }
-      },
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    closeModal();
-    initGoods();
-  });
-};
 
 const fillModal = (err, data) => {
   if (err) {
@@ -85,6 +49,7 @@ const fillModal = (err, data) => {
     const id = targetRow.querySelector('.table__cell_name').dataset.id;
     const goods = data.goods;
     const item = goods.find(el => el.id === id);
+    console.log(item)
 
     if (target.closest('.table__btn_del')) {
       console.log(id)
@@ -94,8 +59,19 @@ const fillModal = (err, data) => {
     }
 
     if (target.classList.contains('table__btn_edit')) {
-      elems.overlay.classList.add('active');
-      elems.modalTotal.textContent = 0;
+      if (item.image !== 'image/notimage.jpg') {
+        const modalPreviewContainer = document.createElement('div');
+        const modalPreview = document.createElement('img');
+
+        modalPreviewContainer.classList.add('image-container');
+        elems.modalFieldset.append(modalPreviewContainer);
+        modalPreview.classList.add('modal__label_file-add');
+        modalPreviewContainer.append(modalPreview);
+        modalPreview.src = `${serverURL}/${item.image}`;
+        modalPreviewContainer.style.display = 'block';
+      }
+      elems.modalTitle.textContent = 'Изменить товар';
+      elems.modal.querySelector('.modal__vendor-code').style.display = 'flex';
       elems.modalInputDiscount.setAttribute('disabled', '');
       elems.modalDiscountCheck.removeAttribute('checked');
       elems.modalName.value = item.title;
@@ -106,6 +82,7 @@ const fillModal = (err, data) => {
       elems.modalCount.value = item.count;
       elems.modalPrice.value = item.price;
       elems.vendorModalId.textContent = item.id;
+      openModal();
 
       if (item.discount > 0) {
         elems.modalInputDiscount.removeAttribute('disabled');
@@ -116,8 +93,6 @@ const fillModal = (err, data) => {
       } else {
         elems.modalTotal.textContent = parseInt(elems.modalCount.value * elems.modalPrice.value);
       }
-
-      editGoodForm(elems.modalForm, elems.tableBody);
     }
   });
 }
@@ -126,7 +101,6 @@ const getDataModal = async () => {
   await fetchRequest('https://sore-wry-blade.glitch.me/api/goods?page=2', {
     callback: fillModal,
   });
-  // initGoods();
 };
 
 const delGoods = async (id) => {

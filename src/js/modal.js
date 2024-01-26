@@ -1,5 +1,5 @@
-import {generateRandomId} from './utils';
 import * as elems from './elements';
+import {addGoodForm, editGoodForm} from './addGoods.js';
 
 const maxFileSize = 1048576;
 const delSvg = `
@@ -16,14 +16,25 @@ const closeModal = () => {
   elems.overlay.classList.remove('active');
   elems.modalForm.reset();
   elems.modalDescription.textContent = '';
+  if (elems.modalForm.querySelector('.image-container')) {
+    console.log(elems.modalForm.querySelector('.image-container'))
+    elems.modalForm.querySelector('.image-container').remove();
+  }
 };
 
 const openModal = () => {
   elems.overlay.classList.add('active');
   elems.modalTotal.textContent = 0;
-  elems.vendorModalId.textContent = '';
-  elems.vendorModalId.textContent = generateRandomId();
-  return elems.vendorModalId;
+  const formData = new FormData(elems.modalForm);
+  const goodTitle = Object.fromEntries(formData).title;
+
+  if (goodTitle !== '') {
+    console.log('PATCH');
+    editGoodForm();
+  } else {
+    console.log('POST');
+    addGoodForm();
+  }
 };
 
 elems.overlay.addEventListener('click', (evt) => {
@@ -32,7 +43,11 @@ elems.overlay.addEventListener('click', (evt) => {
   }
 });
 
-elems.btnAdd.addEventListener('click', openModal);
+elems.btnAdd.addEventListener('click', () => {
+  openModal();
+  elems.modal.querySelector('.modal__vendor-code').style.display = 'none';
+  elems.modalTitle.textContent = 'Добавить товар';
+});
 
 elems.modal.addEventListener('change', evt => {
   if (evt.target.closest('.modal__checkbox')) {

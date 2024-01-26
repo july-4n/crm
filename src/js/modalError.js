@@ -32,8 +32,9 @@ const renderModalErr = () => {
 };
 
 document.addEventListener('click', ({target}) => {
-  if (target.classList.contains('modal-error__close svg')) {
-    target.parentNode.parentNode.remove();
+  if (target.closest('.modal-error__close')) {
+    document.querySelector('.modal-error').classList.remove('is-visible');
+    document.querySelector('.modal-error').remove();
   }
 })
 

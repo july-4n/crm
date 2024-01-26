@@ -5,7 +5,7 @@ import {createRow} from './create';
 const form = document.querySelector('.panel__search');
 const searchInput = form.querySelector('.panel__input')
 
-export const renderSearchList = (phrase) => fetchRequest(`https://sore-wry-blade.glitch.me/api/goods?page=1&search=${phrase}`, {
+export const renderSearchList = (phrase) => fetchRequest(`https://sore-wry-blade.glitch.me/api/goods?page=2&search=${phrase}`, {
 
   callback(err, data) {
     if (err) {
@@ -29,6 +29,5 @@ searchInput.addEventListener('input', () => {
     const searchQuery = searchInput.value;
     renderSearchList(searchQuery)
   }, 300);
-  console.log(timeoutId)
 });
 
