@@ -30,8 +30,6 @@ const confirmModal = (id) => {
   })
 };
 
-
-
 const fillModal = (err, data) => {
   if (err) {
     console.warn(err, data);
