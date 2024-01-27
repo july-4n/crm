@@ -19,7 +19,9 @@ const addGoodForm = () => {
       count: newGood.count,
       units: newGood.units,
       category: newGood.category,
+      image: `image/${newGood.image.name}`,
     };
+    console.log(params.image)
 
     fetchRequest('https://sore-wry-blade.glitch.me/api/goods?page=2', {
       method: 'POST',
@@ -59,6 +61,7 @@ const editGoodForm = () => {
       units: editGood.units,
       category: editGood.category,
       id: editGood.id,
+      image: editGood.image,
     };
 
     fetchRequest(`https://sore-wry-blade.glitch.me/api/goods/${id}`, {
