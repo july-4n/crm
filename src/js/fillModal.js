@@ -5,7 +5,6 @@ import {getNumberRow} from './utils';
 import initGoods from './render';
 import renderModalErr from './modalError';
 import {openModal, closeModal} from './modal';
-import { editGoodForm } from './addGoods';
 
 const serverURL = 'https://sore-wry-blade.glitch.me';
 

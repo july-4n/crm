@@ -96,7 +96,19 @@
 }
 
 .modal__label_category {
+  position: relative;
   grid-area: category;
+}
+
+.modal__label_category svg {
+  position: absolute;
+
+  width: 18px;
+  height: 18px;
+  top: 50%;
+  right: 9px;
+
+  transition: transform 0.6s ease;
 }
 
 .modal__label_description {
@@ -228,9 +240,6 @@
   letter-spacing: 0.05em;
 }
 
-.modal__select {
-  position: relative;
-}
 
 .modal__select,
 .modal__input {
@@ -243,8 +252,19 @@
   padding: 5px;
 }
 
+.modal__select {
+  position: relative;
+  appearance: none;
+  cursor: pointer;
+}
+
+.modal__select:focus,
 .modal__input:focus {
   outline: 2px solid #6E6893;
+}
+
+.modal__select:focus + svg {
+  transform: rotate(-180deg);
 }
 
 .modal__input_textarea {
