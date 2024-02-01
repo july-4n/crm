@@ -1,5 +1,7 @@
+export const address = 'https://rambunctious-gem-snowshoe.glitch.me';
+
 const fetchRequest = async (url, {
-  method = 'get',
+  method = 'GET',
   callback,
   body,
   headers,
@@ -12,7 +14,7 @@ const fetchRequest = async (url, {
     if (body) options.body = JSON.stringify(body);
     if (headers) options.headers = headers;
 
-    const response = await fetch(url, options);
+    const response = await fetch(`${address}${url}`, options);
 
     if (response.ok) {
       const data = await response.json();
@@ -22,7 +24,11 @@ const fetchRequest = async (url, {
 
     throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
   } catch (err) {
-    return callback(err);
+    if (err.message.includes('404') || err.message.includes('422') || err.message.includes('500')) {
+      callback(err.message);
+      return;
+    }
+    callback('Что-то пошло не так');
   }
 };
 

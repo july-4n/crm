@@ -1,11 +1,12 @@
 import fetchRequest from './fetchRequest';
 import * as elems from './elements';
 import {createRow} from './create';
+// import {renderModalErr} from './modalError.js';
 
 const form = document.querySelector('.panel__search');
 const searchInput = form.querySelector('.panel__input')
 
-export const renderSearchList = (phrase) => fetchRequest(`https://sore-wry-blade.glitch.me/api/goods?page=2&search=${phrase}`, {
+export const renderSearchList = (phrase) => fetchRequest(`/api/goods?page=1&search=${phrase}`, {
 
   callback(err, data) {
     if (err) {
@@ -15,7 +16,7 @@ export const renderSearchList = (phrase) => fetchRequest(`https://sore-wry-blade
 
     elems.tableBody.innerHTML = '';
     const goods = data.goods;
-    const res = goods.map((el, i) => createRow(el, i)).join('');
+    const res = goods.map((el) => createRow(el)).join('');
     elems.tableBody.insertAdjacentHTML('beforeend', res);
   },
 });

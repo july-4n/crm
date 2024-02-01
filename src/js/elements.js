@@ -23,8 +23,9 @@ const modalDescription = modal.querySelector('#description');
 const modalUnits = modal.querySelector('#units');
 const modalName = modal.querySelector('#title');
 const modalCategory = modal.querySelector('.modal__label_category');
+const modalSelect = modal.querySelector('.modal__select');
+const modalSubmit = modal.querySelector('.modal__submit');
 const tableBody = table.querySelector('.table__body');
-
 
 export {
   body,
@@ -52,5 +53,7 @@ export {
   modalUnits,
   modalName,
   modalCategory,
+  modalSelect,
+  modalSubmit,
   tableBody,
 }

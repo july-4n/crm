@@ -1,5 +1,3 @@
-import * as elems from './elements';
-
 const createModalErr = () => {
   const modal = document.createElement('div');
   modal.classList.add('modal-error', 'is-visible');
@@ -25,7 +23,7 @@ const createModalErr = () => {
   return modal;
 };
 
-const renderModalErr = () => {
+export const renderModalErr = () => {
   const modal = createModalErr();
   elems.body.append(modal);
   return modal;
@@ -37,5 +35,3 @@ document.addEventListener('click', ({target}) => {
     document.querySelector('.modal-error').remove();
   }
 })
-
-export default renderModalErr;

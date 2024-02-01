@@ -1,4 +1,8 @@
-const createModalAdd = (obj) => {
+import {getTotalPrice} from "./controls.js";
+import fetchRequest from './fetchRequest';
+import {renderModalErr} from './modalError.js';
+
+const createModalConfirm = (obj) => {
   const modal = document.createElement('div');
   modal.classList.add('modal-add', 'is-visible');
 
@@ -31,13 +35,29 @@ const createModalAdd = (obj) => {
   return modal;
 };
 
-const renderModalAdd = (body, obj) => {
-  const modal = createModalAdd(obj);
+export const renderModalConfirm = (body, obj) => {
+  const modal = createModalConfirm(obj);
   body.classList.add('overflow');
   body.append(modal);
   return modal;
 };
 
-export {
-  renderModalAdd,
+export const delGoods = (modal, row, id) => {
+  modal.addEventListener('click', ({target}) => {
+    if (target.tagName !== 'BUTTON') return;
+    if (target.classList.contains('modal-add__btn--del')) {
+      fetchRequest(`/api/goods/${id}`, {
+        method: 'DELETE',
+        callback(err) {
+          if (err) {
+            renderModalErr(err);
+            return;
+          }
+          getTotalPrice();
+          row.remove();
+        },
+      });
+    }
+    modal.remove();
+  })
 };

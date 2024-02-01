@@ -1,9 +1,12 @@
-import {table, totalPrice} from './elements';
+import {totalPrice} from './elements';
 
-export const getTotalPrice = () => {
-  const allGoods = table.querySelectorAll('[data-total-good]');
-  const total = [...allGoods].reduce(function(acc, val) {
-    return acc + parseInt(val.dataset.totalGood)
+export const calculateWithDiscount = (good) => {
+  return good.price - good.discount * good.price / 100;
+};
+
+export const calculateTotalPrice = (goods) => {
+  const total = goods.reduce(function(acc, good) {
+    return acc + calculateWithDiscount(good) * good.count
   }, 0);
 
   totalPrice.textContent = total;

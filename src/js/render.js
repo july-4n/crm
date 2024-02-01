@@ -1,8 +1,18 @@
 import {createRow} from './create';
 import {tableBody} from './elements';
 import fetchRequest from './fetchRequest';
-import {getTotalPrice} from './getPrice';
+import {calculateTotalPrice} from './getPrice';
 
+export const changeCursor = (form) => {
+  if (form) {
+    const elems = form.querySelectorAll('.table__btn_pic');
+    elems.forEach(el => {
+      if (el.dataset.pic === 'image/notimage.jpg') {
+        el.style.pointerEvents = 'none';
+      }
+    })
+  }
+}
 
 const renderGoods = (err, data) => {
   if (err) {
@@ -10,22 +20,21 @@ const renderGoods = (err, data) => {
     return;
   }
 
-  const goods = data.goods.map((elem, i) => {
-    return createRow(elem, i);
+  const goods = data.goods.map((elem) => {
+    return createRow(elem);
   }).join('');
+  calculateTotalPrice(data.goods);
   return goods;
 };
 
 const initGoods = async () => {
-  const goods = await fetchRequest('https://sore-wry-blade.glitch.me/api/goods?page=2', {
+  const goods = await fetchRequest(`/api/goods`, {
     callback: renderGoods,
   });
 
   tableBody.textContent = '';
   tableBody.insertAdjacentHTML('afterbegin', goods);
-  getTotalPrice();
+  changeCursor(tableBody);
 };
-
-initGoods();
 
 export default initGoods;

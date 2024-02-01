@@ -1,6 +1,6 @@
 import fetchRequest from './fetchRequest';
-import * as elems from './elements';
-import renderModalErr from './modalError';
+import {categoryList} from './elements';
+import {renderModalErr} from './modalError.js';
 
 const createOption = (text) => {
   const option = document.createElement('option');
@@ -29,14 +29,14 @@ const renderCategory = (err, data) => {
 };
 
 const initCategory = async () => {
-  const categories = await fetchRequest('https://sore-wry-blade.glitch.me/api/categories', {
+  const categories = await fetchRequest(`/api/categories`, {
     callback: renderCategory,
   });
 
   const firstOption = createFirstOption();
-  elems.categoryList.innerHTML = '';
-  elems.categoryList.append(firstOption)
-  elems.categoryList.append(...categories)
+  categoryList.innerHTML = '';
+  categoryList.append(firstOption)
+  categoryList.append(...categories)
 };
 
 export default initCategory;

@@ -62,6 +62,12 @@
   align-items: center;
 }
 
+.table__cell_btn-wrapper svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
 .table__btn {
   background-color: transparent;
   border: none;
@@ -70,16 +76,5 @@
   display: block;
   width: 20px;
   height: 20px;
-}
-
-.table__btn_pic {
-  background-image: url("../img/pic.svg");
-}
-
-.table__btn_edit {
-  background-image: url("../img/edit.svg");
-}
-
-.table__btn_del {
-  background-image: url("../img/delete.svg");
+  cursor: pointer;
 }

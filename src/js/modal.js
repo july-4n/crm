@@ -1,68 +1,97 @@
 import * as elems from './elements';
-import {addGoodForm, editGoodForm} from './addGoods.js';
+import {formControl} from './controls.js';
+import {createVendorCode} from './create';
+import {fileControl, renderPreview} from './addFile';
+import {renderModalErr} from './modalError.js';
 
-const maxFileSize = 1048576;
-const delSvg = `
-  <div class="image-container__overlay">
-    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g id="ic:outline-delete-forever">
-    <path id="Vector" d="M23.5334 17.45L20 20.9833L16.45 17.45L14.1 19.8L17.65 23.3333L14.1167 26.8667L16.4667 29.2167L20 25.6833L23.5334 29.2167L25.8834 26.8667L22.35 23.3333L25.8834 19.8L23.5334 17.45ZM25.8334 6.66667L24.1667 5H15.8334L14.1667 6.66667H8.33337V10H31.6667V6.66667H25.8334ZM10 31.6667C10 33.5 11.5 35 13.3334 35H26.6667C28.5 35 30 33.5 30 31.6667V11.6667H10V31.6667ZM13.3334 15H26.6667V31.6667H13.3334V15Z" fill="white"/>
-    </g>
-    </svg>
-  </div>
-`
-
-const closeModal = () => {
+export const closeModal = () => {
   elems.overlay.classList.remove('active');
   elems.modalForm.reset();
   elems.modalDescription.textContent = '';
-  if (elems.modalForm.querySelector('.image-container')) {
-    console.log(elems.modalForm.querySelector('.image-container'))
-    elems.modalForm.querySelector('.image-container').remove();
+  const vendorCode = elems.modal.querySelector('.vendor-code');
+  // const previewContainer = elems.modal.querySelector('.image-container');
+  // previewContainer.innerHTML = '';
+  // previewContainer.style.display = 'none';
+  const error = elems.modal.querySelector('.modal__label_file-error');
+  console.log(error)
+  if (error) {
+    error.remove();
+  }
+
+  if (vendorCode) {
+    vendorCode.remove();
   }
 };
 
-const openModal = () => {
+export const openModal = async (err, data, list) => {
+  if (err) {
+    renderModalErr(err);
+    return;
+  }
+
   elems.overlay.classList.add('active');
-  elems.modalTotal.textContent = 0;
-  const formData = new FormData(elems.modalForm);
-  const goodTitle = Object.fromEntries(formData).title;
 
-  if (goodTitle !== '') {
-    console.log('PATCH');
-    editGoodForm();
-  } else {
-    console.log('POST');
-    addGoodForm();
-  }
-};
+  if (data) {
+    const vendorCode = createVendorCode(data.id);
+    document.querySelector('.modal_top').insertAdjacentHTML('beforeend', vendorCode);
+    elems.modalTitle.textContent = 'Изменить товар';
+    elems.modalSubmit.textContent = 'Изменить товар';
 
-elems.overlay.addEventListener('click', (evt) => {
-  if (evt.target === elems.overlay || evt.target.closest('.modal__close')) {
-    closeModal();
-  }
-});
+    elems.modalInputDiscount.setAttribute('disabled', '');
+    elems.modalDiscountCheck.removeAttribute('checked');
+    elems.modalName.value = data.title;
+    elems.modalSelect.value = data.category;
+    elems.modalDescription.textContent = data.description;
+    elems.modalUnits.value = data.units;
+    elems.modalInputDiscount.value = data.discount;
+    elems.modalCount.value = data.count;
+    elems.modalPrice.value = data.price;
 
-elems.btnAdd.addEventListener('click', () => {
-  openModal();
-  elems.modal.querySelector('.modal__vendor-code').style.display = 'none';
-  elems.modalTitle.textContent = 'Добавить товар';
-});
-
-elems.modal.addEventListener('change', evt => {
-  if (evt.target.closest('.modal__checkbox')) {
-    if (!elems.modalInputCheckbox.checked) {
-      elems.modalInputDiscount.value = '';
-      elems.modalInputDiscount.setAttribute('disabled', '');
-    } else {
+    if (data.discount > 0) {
       elems.modalInputDiscount.removeAttribute('disabled');
+      elems.modalDiscountCheck.setAttribute('checked', '');
+      let total = elems.modalCount.value * elems.modalPrice.value;
+      total -= total * (data.discount / 100);
+      elems.modalTotal.textContent = parseInt(total);
+    } else {
+      elems.modalTotal.textContent = parseInt(elems.modalCount.value * elems.modalPrice.value);
     }
   }
-});
 
-const getModalTotal = () => {
-  elems.modalTotal.textContent = parseInt(elems.modalCount.value * elems.modalPrice.value);
-}
+  if (data && data.image !== "image/notimage.jpg") {
+    const containerPreview = elems.modalFieldset.querySelector('.image-container');
+    const preview = renderPreview(data);
+    console.log(preview)
+    containerPreview.innerHTML = preview;
+    containerPreview.style.display = 'block';
+  }
+
+  fileControl(data);
+  if (!data) {
+    formControl(elems.modalForm, 'POST', list);
+    elems.modalTitle.textContent = 'Добавить товар';
+    elems.modalSubmit.textContent = 'Добавить товар';
+  } else {
+    formControl(elems.modalForm, 'PATCH', null, data.id);
+  }
+
+  elems.overlay.addEventListener('click', (evt) => {
+    if (evt.target === elems.overlay || evt.target.closest('.modal__close')) {
+      closeModal();
+    }
+  });
+
+  elems.modal.addEventListener('change', evt => {
+    if (evt.target.closest('.modal__checkbox')) {
+      if (!elems.modalInputCheckbox.checked) {
+        elems.modalInputDiscount.value = '';
+        elems.modalInputDiscount.setAttribute('disabled', '');
+      } else {
+        elems.modalInputDiscount.removeAttribute('disabled');
+      }
+    }
+  });
+};
 
 const addRequiredAttr = inputs => {
   inputs.forEach(el => {
@@ -73,47 +102,3 @@ const addRequiredAttr = inputs => {
 addRequiredAttr(elems.modalInputs);
 
 elems.overlay.classList.remove('active');
-
-elems.modal.addEventListener('change', getModalTotal);
-
-const fileErrorMessage = document.createElement('p');
-const modalPreviewContainer = document.createElement('div');
-const modalPreview = document.createElement('img');
-
-elems.file.addEventListener('change', () => {
-  if (elems.file.files.length > 0) {
-    const selectedFile = elems.file.files[0];
-    if (selectedFile.size <= maxFileSize) {
-      fileErrorMessage.innerHTML = '';
-
-      modalPreviewContainer.classList.add('image-container');
-      elems.modalFieldset.append(modalPreviewContainer);
-      modalPreviewContainer.innerHTML = '';
-
-      modalPreview.classList.add('modal__label_file-add');
-      modalPreview.innerHTML = '';
-      const src = URL.createObjectURL(selectedFile);
-      modalPreviewContainer.append(modalPreview);
-      modalPreview.src = src;
-      modalPreviewContainer.style.display = 'block';
-      modalPreviewContainer.insertAdjacentHTML('beforeend', delSvg);
-    } else {
-      modalPreviewContainer.remove();
-      fileErrorMessage.classList.add('modal__label_file-error');
-      fileErrorMessage.textContent = "изображение не должно превышать размер 1мб";
-      elems.modalFieldset.append(fileErrorMessage);
-    }
-  }
-})
-
-document.addEventListener('click', ({target}) => {
-  if (target.closest('.image-container__overlay svg')) {
-    modalPreviewContainer.remove();
-    elems.file.value = '';
-  }
-});
-
-export {
-  closeModal,
-  openModal,
-}
