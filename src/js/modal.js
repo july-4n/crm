@@ -9,9 +9,9 @@ export const closeModal = () => {
   elems.modalForm.reset();
   elems.modalDescription.textContent = '';
   const vendorCode = elems.modal.querySelector('.vendor-code');
-  // const previewContainer = elems.modal.querySelector('.image-container');
-  // previewContainer.innerHTML = '';
-  // previewContainer.style.display = 'none';
+  const previewContainer = elems.modal.querySelector('.image-container');
+  previewContainer.innerHTML = '';
+  previewContainer.style.display = 'none';
   const error = elems.modal.querySelector('.modal__label_file-error');
   console.log(error)
   if (error) {
